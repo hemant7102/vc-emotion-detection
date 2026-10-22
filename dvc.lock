@@ -1,0 +1,78 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+    - path: src/data/data_ingestion.py
+      hash: md5
+      md5: 09725e79e52b78ae09a21d96826b6901
+      size: 3529
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.2
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: b7ac4496734ff387aca131728f63e9a1.dir
+      size: 900635
+      nfiles: 2
+  data_preprocessing:
+    cmd: python src/data/data_preprocessing.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: b7ac4496734ff387aca131728f63e9a1.dir
+      size: 900635
+      nfiles: 2
+    - path: src/data/data_preprocessing.py
+      hash: md5
+      md5: 36e61fa0c89ebd4ded60581b771928b0
+      size: 3992
+    outs:
+    - path: data/interim
+      hash: md5
+      md5: 986231529b056e92ce9d59282c843488.dir
+      size: 638872
+      nfiles: 2
+  feature_engineering:
+    cmd: python src/features/feature_engineering.py
+    deps:
+    - path: data/interim
+      hash: md5
+      md5: 986231529b056e92ce9d59282c843488.dir
+      size: 638872
+      nfiles: 2
+    - path: src/features/feature_engineering.py
+      hash: md5
+      md5: 30e853b86781d9a1c666cc44a1f94d72
+      size: 3768
+    params:
+      params.yaml:
+        feature_engineering.max_features: 100
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: d9be1bd3d81840810470b6d705348166.dir
+      size: 4607275
+      nfiles: 2
+  model_building:
+    cmd: python src/model/model_building.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: d9be1bd3d81840810470b6d705348166.dir
+      size: 4607275
+      nfiles: 2
+    - path: src/model/model_building.py
+      hash: md5
+      md5: de92b3c62df8a2005d920ac87a43265e
+      size: 3063
+    params:
+      params.yaml:
+        model_building.learning_rate: 0.1
+        model_building.n_estimators: 25
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 6503a3b6aac4dbc11557eab2874f4cbc
+      size: 39096
