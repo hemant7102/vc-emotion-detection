@@ -282,7 +282,7 @@ def main():
 
         # Load test dataset
         test_data = load_data(
-            "./data/processed/test_tfidf.csv"
+            "./data/processed/test_bow.csv"
         )
 
         # Validate dataset structure

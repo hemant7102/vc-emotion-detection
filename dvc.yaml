@@ -34,10 +34,13 @@ stages:
     - model_building.learning_rate
     outs:
     - models/model.pkl
+
   model_evaluation:
     cmd: python src/model/model_evaluation.py
     deps:
-    - models/model.pkl
-    - src/model/model_evaluation.py
+      - data/processed/test_bow.csv
+      - models/model.pkl
+      - src/model/model_evaluation.py
     metrics:
-    - reports/metrics.json
+      - reports/metrics.json:
+          cache: false
